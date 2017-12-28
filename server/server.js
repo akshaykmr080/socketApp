@@ -20,11 +20,11 @@ io.on('connection', (socket) => {
     socket.emit('AdminMessage', generateMessage('Admin','Welcome to the chat App'));
     socket.broadcast.emit('NewUserMessage',generateMessage('Admin','New user has joined'));
     
-    socket.on('createMessage', (message)=>{
+    socket.on('createMessage', (message, callback)=>{
         console.log('createMessage',message);
         //broadcasting to all users including the user from whome the msg was received
         io.emit('newMessage', generateMessage(message.from, message.text))
-
+        callback('This is from the server');
         //broadcast to everyone except current user
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,
