@@ -11,30 +11,55 @@ socket.on('disconnect', function() {
 
 socket.on('newMessage', function(data) {
     var formattedTime = moment(data.createdAt).format('H:mm a');
-    var li = jQuery('<li></li>');
-    li.text(`${data.from} ${formattedTime}: ${data.text}`);
+    var template = jQuery("#message-template").html();
+    var html = Mustache.render(template, {
+        from: data.from,
+        time: formattedTime,
+        text: data.text
+    });
+    jQuery('#messages').append(html);
+    
+    // var li = jQuery('<li></li>');
+    // li.text(`${data.from} ${formattedTime}: ${data.text}`);
 
-    jQuery("#messages").append(li);
+    // jQuery("#messages").append(li);
 });
 
 socket.on('newLocationMessage', function(data) {
-    console.log(JSON.stringify(data, undefined, 2));
-    var formattedTime = moment(data.createdAt).format('H:mm a');
-    var li = jQuery('<li></li>');
+    // console.log(JSON.stringify(data, undefined, 2));
+    // var formattedTime = moment(data.createdAt).format('H:mm a');
+    // var li = jQuery('<li></li>');
     
-    var a = jQuery('<a target="_blank">My Current Location</a>')
-    li.text(`${data.from} ${formattedTime}: `);
-    a.attr('href', data.url);
-    li.append(a)
-    jQuery("#messages").append(li);
+    // var a = jQuery('<a target="_blank">My Current Location</a>')
+    // li.text(`${data.from} ${formattedTime}: `);
+    // a.attr('href', data.url);
+    // li.append(a)
+    // jQuery("#messages").append(li);
+
+    var formattedTime = moment(data.createdAt).format('H:mm a');
+    var template = jQuery("#location-template").html();
+    var html = Mustache.render(template, {
+        from: data.from,
+        time: formattedTime,
+        url: data.url
+    });
+    jQuery('#messages').append(html);
 });
 
 socket.on('AdminMessage', function(data){
-    console.log(JSON.stringify(data.text, undefined, 2));
+    // console.log(JSON.stringify(data.text, undefined, 2));
+    // var formattedTime = moment(data.createdAt).format('H:mm a');
+    // var li = jQuery('<li></li>');
+    // li.text(`${data.from} ${formattedTime}: ${data.text}`);
+    // jQuery("#messages").append(li);
     var formattedTime = moment(data.createdAt).format('H:mm a');
-    var li = jQuery('<li></li>');
-    li.text(`${data.from} ${formattedTime}: ${data.text}`);
-    jQuery("#messages").append(li);
+    var template = jQuery("#message-template").html();
+    var html = Mustache.render(template, {
+        from: data.from,
+        time: formattedTime,
+        text: data.text
+    });
+    jQuery('#messages').append(html);
 });
 
 socket.on('NewUserMessage', function(data){
