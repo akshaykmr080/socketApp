@@ -10,19 +10,20 @@ socket.on('disconnect', function() {
 });
 
 socket.on('newMessage', function(data) {
-    console.log('New Message');
-    console.log(JSON.stringify(data, undefined, 2));
+    var formattedTime = moment(data.createdAt).format('H:mm a');
     var li = jQuery('<li></li>');
-    li.text(`${data.from}: ${data.text}`);
+    li.text(`${data.from} ${formattedTime}: ${data.text}`);
 
     jQuery("#messages").append(li);
 });
 
 socket.on('newLocationMessage', function(data) {
     console.log(JSON.stringify(data, undefined, 2));
+    var formattedTime = moment(data.createdAt).format('H:mm a');
     var li = jQuery('<li></li>');
+    
     var a = jQuery('<a target="_blank">My Current Location</a>')
-    li.text(`${data.from}: `);
+    li.text(`${data.from} ${formattedTime}: `);
     a.attr('href', data.url);
     li.append(a)
     jQuery("#messages").append(li);
@@ -30,9 +31,9 @@ socket.on('newLocationMessage', function(data) {
 
 socket.on('AdminMessage', function(data){
     console.log(JSON.stringify(data.text, undefined, 2));
+    var formattedTime = moment(data.createdAt).format('H:mm a');
     var li = jQuery('<li></li>');
-    li.text(`${data.from}: ${data.text}`);
-
+    li.text(`${data.from} ${formattedTime}: ${data.text}`);
     jQuery("#messages").append(li);
 });
 
